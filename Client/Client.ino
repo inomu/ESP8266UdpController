@@ -10,7 +10,7 @@ PICからシリアルデータを受け取り，本ClientからServerに受け�
 
 //mergetest
 
-#include <ESP8266WiFi.h>
+#include <ESP8266WiFi.h
 #include <WiFiUdp.h>
 
 //Access Point Setting
