@@ -8,7 +8,7 @@ PICからシリアルデータを受け取り，本ClientからServerに受け�
 3.Serverとの通信がロストすると，通信を回復するように再アクセスを行う．
 */
 
-//atom testtt
+//atom testttt
 
 #include <ESP8266WiFi.h
 #include <WiFiUdp.h>
