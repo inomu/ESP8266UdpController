@@ -8,32 +8,31 @@ PICからシリアルデータを受け取り，本ClientからServerに受け�
 3.Serverとの通信がロストすると，通信を回復するように再アクセスを行う．
 */
 
-//branch test
-
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
 
-//Access Point Setting
-const char *APSSID = "ESP_WROOM_02";
-const char *APPASS = "raspberrypi";
-IPAddress HostIP(192.168.4.1);
-IPAddress myIP(192.168.4.2);
+//WiFi Settings
+IPAddress HostIP(192,168,4,1);
+IPAddress myIP(192,168,4,2);
+const char *SSID = "ESP_WROOM_02";
+const char *PASS = "raspberrypi";
 unsigned int localPort = 8888;
 
+//UDP settings
 WiFiUDP UDP;
-char SendData
-char packetBuffer[255];
+char SendData;
 
 void connectWiFi(){
-  //WiFi.begin(APSSID,APPASS);
-  while (WiFi.status != WL_CONNECTED) {
-    Serial.println("connectiong WiFi");
-    WiFi.begin(APSSID,APPASS);
+  WiFi.begin(SSID,PASS);
+  WiFi.config(myIP,WiFi.gatewayIP(),WiFi.subnetMask());
+  while (WiFi.status() != WL_CONNECTED) {
+    Serial.println("connecting WiFi");
     delay(3000);
   }
-  WiFi.config(myIP, WiFi.gatewayIP(), WiFi.subnetMask());
+  Serial.println("connected WiFi");
 }
 
+//引数型にすること．
 void SendUdp(){
   if(UDP.beginPacket(HostIP,localPort) ){
     UDP.write(SendData);
@@ -47,7 +46,6 @@ void setup() {
 
   UDP.begin(localPort);
   connectWiFi();
-  delay(500);
 }
 
 void loop() {

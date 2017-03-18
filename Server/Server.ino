@@ -16,6 +16,7 @@ void setup() {
   Serial.begin(115200);
   Serial.println();
 
+  WiFi.mode(WIFI_AP);
   WiFi.softAP(APSSID, APPASS);
 
   IPAddress myIP = WiFi.softAPIP();
@@ -25,10 +26,6 @@ void setup() {
 }
 
 void loop() {
-  //  if(WiFi.status() != WL_CONNECTED){
-  //    Serial.println("connection lost");
-  //}
-
   int packetSize = UDP.parsePacket();
 
   if (packetSize) {
