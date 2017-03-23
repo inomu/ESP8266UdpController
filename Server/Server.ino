@@ -36,6 +36,7 @@ void loop() {
     Serial.print(" / ");
     Serial.println(packetBuffer);
 
+    //テスト用コールバック  
     //UDP.beginPacket(udpReturnAddr, udpReturnPort);
     //UDP.write("ok");
     //UDP.endPacket();
