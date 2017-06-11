@@ -16,6 +16,8 @@ void setup() {
   Serial.begin(115200);
   Serial.println();
 
+  WiFi.softAPdisconnect(true);
+  //引数でssidを隠すことができる
   WiFi.softAP(APSSID, APPASS);
 
   IPAddress myIP = WiFi.softAPIP();
@@ -25,9 +27,9 @@ void setup() {
 }
 
 void loop() {
-  //  if(WiFi.status() != WL_CONNECTED){
-  //    Serial.println("connection lost");
-  //}
+  
+  Serial.println(WiFi.softAPgetStationNum());
+  delay(500);
 
   int packetSize = UDP.parsePacket();
 
@@ -35,8 +37,8 @@ void loop() {
     int len = UDP.read(packetBuffer, packetSize);
     //終端文字設定
     if (len > 0) packetBuffer[len] = '\0';
-    Serial.print(UDP.remoteIP());
-    Serial.print(" / ");
+    //Serial.print(UDP.remoteIP());
+    //Serial.print(" / ");
     Serial.println(packetBuffer);
 
     //UDP.beginPacket(udpReturnAddr, udpReturnPort);

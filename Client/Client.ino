@@ -10,28 +10,36 @@ PICからシリアルデータを受け取り，本ClientからServerに受け�
 
 //atom testttt
 
-#include <ESP8266WiFi.h
+#include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
 
 //Access Point Setting
 const char *APSSID = "ESP_WROOM_02";
 const char *APPASS = "raspberrypi";
-IPAddress HostIP(192.168.4.1);
-IPAddress myIP(192.168.4.2);
+IPAddress HostIP(192,168,4,1);
+IPAddress myIP(192,168,4,2);
 unsigned int localPort = 8888;
 
 WiFiUDP UDP;
-char SendData
+char SendData;
 char packetBuffer[255];
 
 void connectWiFi(){
-  //WiFi.begin(APSSID,APPASS);
-  while (WiFi.status != WL_CONNECTED) {
-    Serial.println("connectiong WiFi");
-    WiFi.begin(APSSID,APPASS);
-    delay(3000);
-  }
+  Serial.println("connectiong WiFi");
+  WiFi.disconnect();
+  WiFi.begin(APSSID,APPASS);
   WiFi.config(myIP, WiFi.gatewayIP(), WiFi.subnetMask());
+
+  int cnt = 0;
+  while(WiFi.status() != WL_CONNECTED){
+    Serial.print(".");
+    yield();
+    delay(100);
+    cnt++;
+    if(cnt == 50) break;
+  }
+  
+  
 }
 
 void SendUdp(){
@@ -46,8 +54,8 @@ void setup() {
   Serial.println();
 
   UDP.begin(localPort);
+  WiFi.disconnect();
   connectWiFi();
-  delay(500);
 }
 
 void loop() {
@@ -56,8 +64,9 @@ void loop() {
     Serial.println("connection lost");
     WiFi.disconnect();
     connectWiFi();
+  }else{
+    Serial.print("send");
+    SendData = 'E';
+    SendUdp();
   }
-
-  SendData = 'E';
-  SendUdp();
 }
